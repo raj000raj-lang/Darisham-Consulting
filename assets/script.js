@@ -83,3 +83,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+// Drag-to-scroll for horizontal scroll containers
+(function() {
+  var scrollers = document.querySelectorAll('.svc-scroll-wrap, .case-scroll-wrap');
+  scrollers.forEach(function(el) {
+    var isDown = false, startX, scrollLeft;
+    el.addEventListener('mousedown', function(e) {
+      isDown = true;
+      startX = e.pageX - el.offsetLeft;
+      scrollLeft = el.scrollLeft;
+    });
+    el.addEventListener('mouseleave', function() { isDown = false; });
+    el.addEventListener('mouseup',    function() { isDown = false; });
+    el.addEventListener('mousemove',  function(e) {
+      if (!isDown) return;
+      e.preventDefault();
+      var x = e.pageX - el.offsetLeft;
+      el.scrollLeft = scrollLeft - (x - startX) * 1.4;
+    });
+  });
+})();
